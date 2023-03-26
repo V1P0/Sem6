@@ -1,5 +1,5 @@
 import puzzle15 as p15
-import numpy as np;
+#import numpy as np;
 import time
 
 def print_instance(instance):
@@ -13,26 +13,28 @@ def print_instance(instance):
 
 
 def main():
-    instance = [x+1 for x in np.random.permutation(15)]+[0]
-    while not p15.isSolvable(instance):
-        instance = [x+1 for x in np.random.permutation(15)]+[0]
-    instance = [11,14,12,4,10,9,8,5,1,7,3,15,0,6,13,2]
+    #instance = [x+1 for x in np.random.permutation(15)]+[0]
+    #while not p15.isSolvable(instance):
+    #    instance = [x+1 for x in np.random.permutation(15)]+[0]
+    instance = [3,1,4,12,10,5,13,0,9,2,8,15,7,14,11,6]
     if not p15.isSolvable(instance):
         print("not solvable")
         return
     print_instance(instance)
     print("1")
     start = time.time()
-    sol1 = p15.solveInvertDistance(instance)
+    a, sol1 = p15.solveInvertDistance(instance)
     print(len(sol1))
+    print(a)
     print(f'took {time.time()-start}s')
     for s in sol1:
         print_instance(s)
         print()
     print("2")
     start = time.time()
-    sol2 = p15.solveManhattan(instance)
+    a, sol2 = p15.solveManhattan(instance)
     print(len(sol2))
+    print(a)
     print(f'took {time.time()-start}s')
     for s in sol2:
         print_instance(s)

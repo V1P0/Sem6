@@ -1,5 +1,6 @@
 #include "fifteen.hpp"
 #include <iostream>
+
 using namespace std;
 
 int getInvCount(vector<int> arr)
@@ -144,12 +145,14 @@ struct VectorHasher {
     }
 };
 
-Node* solve(vector<int> state, Heuristic* h){
+Node* solve(vector<int> state, Heuristic* h, long* visited_states){
+    (*visited_states)=0;
     unordered_map<vector<int>, Node*, VectorHasher> visited;
     Node* start = new Node(state, h);
     priority_queue<Node*, vector<Node*>,Compare> queue;
     queue.push(start);
     while(!queue.empty()){
+        (*visited_states)++;
         Node* q = queue.top();
         queue.pop();
         if(q->isTarget()){
@@ -166,8 +169,9 @@ Node* solve(vector<int> state, Heuristic* h){
             }else{
                 Node* already_visited = visited[neighbours[i]->state];
                 if(already_visited->g>neighbours[i]->g){
-                    visited[neighbours[i]->state] = neighbours[i];
-                    queue.push(neighbours[i]);
+                     already_visited->g = neighbours[i]->g;
+                     already_visited->f = neighbours[i]->f;
+                     already_visited->previous = neighbours[i]->previous;
                 }
             }
         }

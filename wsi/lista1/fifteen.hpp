@@ -104,4 +104,4 @@ public:
     }
 };
 
-Node* solve(vector<int> state, Heuristic* h);
+Node* solve(vector<int> state, Heuristic* h, long* visited_states);

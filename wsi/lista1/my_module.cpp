@@ -63,7 +63,8 @@ static PyObject *solveManhattan_wrapper(PyObject *self, PyObject *args) {
 
 
     Heuristic* h = new ManhattanDistance();
-    Node* solution = solve(instance, h);
+    long s = 0;
+    Node* solution = solve(instance, h, &s);
     PyObject* solution_list = PyList_New(0);
     while(solution!=nullptr){
         PyObject* step = PyList_New(16);
@@ -74,8 +75,10 @@ static PyObject *solveManhattan_wrapper(PyObject *self, PyObject *args) {
         solution = solution->previous;
     }
     PyList_Reverse(solution_list);
+    PyObject* ret = PyTuple_Pack(2, PyLong_FromLong(s), solution_list);
 
-    return solution_list;
+
+    return ret;
 }
 
 static PyObject *solveMisplaced_wrapper(PyObject *self, PyObject *args) {
@@ -108,7 +111,8 @@ static PyObject *solveMisplaced_wrapper(PyObject *self, PyObject *args) {
 
 
     Heuristic* h = new MisplacedTiles();
-    Node* solution = solve(instance, h);
+    long s = 0;
+    Node* solution = solve(instance, h, &s);
     PyObject* solution_list = PyList_New(0);
     while(solution!=nullptr){
         PyObject* step = PyList_New(16);
@@ -120,7 +124,10 @@ static PyObject *solveMisplaced_wrapper(PyObject *self, PyObject *args) {
     }
     PyList_Reverse(solution_list);
 
-    return solution_list;
+    PyObject* ret = PyTuple_Pack(2, PyLong_FromLong(s), solution_list);
+
+
+    return ret;
 }
 
 static PyObject *solveMDLC_wrapper(PyObject *self, PyObject *args) {
@@ -153,7 +160,8 @@ static PyObject *solveMDLC_wrapper(PyObject *self, PyObject *args) {
 
 
     Heuristic* h = new MDLinearConflict();
-    Node* solution = solve(instance, h);
+    long s = 0;
+    Node* solution = solve(instance, h, &s);
     PyObject* solution_list = PyList_New(0);
     while(solution!=nullptr){
         PyObject* step = PyList_New(16);
@@ -164,8 +172,10 @@ static PyObject *solveMDLC_wrapper(PyObject *self, PyObject *args) {
         solution = solution->previous;
     }
     PyList_Reverse(solution_list);
+    PyObject* ret = PyTuple_Pack(2, PyLong_FromLong(s), solution_list);
 
-    return solution_list;
+
+    return ret;
 }
 
 static PyObject *solveID_wrapper(PyObject *self, PyObject *args) {
@@ -196,7 +206,8 @@ static PyObject *solveID_wrapper(PyObject *self, PyObject *args) {
 
 
     Heuristic* h = new InvertDistance();
-    Node* solution = solve(instance, h);
+    long s = 0;
+    Node* solution = solve(instance, h, &s);
     PyObject* solution_list = PyList_New(0);
     while(solution!=nullptr){
         PyObject* step = PyList_New(16);
@@ -208,7 +219,10 @@ static PyObject *solveID_wrapper(PyObject *self, PyObject *args) {
     }
     PyList_Reverse(solution_list);
 
-    return solution_list;
+    PyObject* ret = PyTuple_Pack(2, PyLong_FromLong(s), solution_list);
+
+
+    return ret;
 }
 
 static PyObject *solveWD_wrapper(PyObject *self, PyObject *args) {
@@ -239,7 +253,8 @@ static PyObject *solveWD_wrapper(PyObject *self, PyObject *args) {
 
 
     Heuristic* h = new WalkingDistance();
-    Node* solution = solve(instance, h);
+    long s = 0;
+    Node* solution = solve(instance, h, &s);
     PyObject* solution_list = PyList_New(0);
     while(solution!=nullptr){
         PyObject* step = PyList_New(16);
@@ -251,7 +266,11 @@ static PyObject *solveWD_wrapper(PyObject *self, PyObject *args) {
     }
     PyList_Reverse(solution_list);
 
-    return solution_list;
+
+    PyObject* ret = PyTuple_Pack(2, PyLong_FromLong(s), solution_list);
+
+
+    return ret;
 }
 
 static PyMethodDef Puzzle15Methods[] = {
