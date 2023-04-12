@@ -15,4 +15,10 @@ class z2 {
             assert(result.isPresent == test.expectedOutcome)
         }
     }
+
+    @org.junit.jupiter.api.Test
+fun test(){
+    var graph = Graph.fromFile("src/resources/2/g2a-1.txt")
+    graph.topologicalSort().get().forEach { println(it) }
+}
 }
