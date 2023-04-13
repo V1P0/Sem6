@@ -5,27 +5,19 @@ import com.google.ortools.linearsolver.*;
 
 import java.util.Arrays;
 
-public class Task2 {
+public class Task2b {
     public static void main(String[] args) {
         Graph graph = Graph.getRandomGraph(20);
-        final int maxTime = 100;
+        final int maxTime = 10;
         int start = 0;
         int end = 9;
-        System.out.println(graph);
-        for (double[] row : graph.costs)
-            System.out.println(Arrays.toString(row));{
-        }
-        System.out.println("------------------");
-        for (double[] row : graph.times)
-            System.out.println(Arrays.toString(row));{
-        }
 
         Loader.loadNativeLibraries();
         MPSolver solver = MPSolver.createSolver("CBC");
         MPVariable[][] x = new MPVariable[graph.getVerticesCount()][graph.getVerticesCount()];
         for(int i = 0; i < graph.getVerticesCount(); i++) {
             for(Integer j :graph.getOutgoings(i)) {
-                x[i][j] = solver.makeBoolVar("x" + i + j);
+                x[i][j] = solver.makeNumVar(0, 1, "x" + i + "_" + j);
             }
         }
         MPObjective objective = solver.objective();
@@ -35,12 +27,12 @@ public class Task2 {
             }
         }
         objective.setMinimization();
-        MPConstraint timeConstraint = solver.makeConstraint(0, maxTime, "time_constraint");
+        /*MPConstraint timeConstraint = solver.makeConstraint(0, maxTime, "time_constraint");
         for(int i = 0; i < graph.getVerticesCount(); i++) {
             for(Integer j :graph.getOutgoings(i)) {
                 timeConstraint.setCoefficient(x[i][j], graph.times[i][j]);
             }
-        }
+        }*/
         for(int i = 0; i < graph.getVerticesCount(); i++) {
             MPConstraint constraint;
             if(i == start) {
@@ -66,9 +58,7 @@ public class Task2 {
         System.out.println("Total cost = " + objective.value());
         for(int i = 0; i < graph.getVerticesCount(); i++) {
             for(Integer j :graph.getOutgoings(i)) {
-                if(x[i][j].solutionValue() == 1) {
-                    System.out.println("From " + i + " to " + j);
-                }
+                System.out.println("x" + i + "_" + j + " = " + x[i][j].solutionValue());
             }
         }
 
