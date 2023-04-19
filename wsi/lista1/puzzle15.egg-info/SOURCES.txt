@@ -1,7 +1,0 @@
-fifteen.cpp
-my_module.cpp
-my_module.py
-puzzle15.egg-info/PKG-INFO
-puzzle15.egg-info/SOURCES.txt
-puzzle15.egg-info/dependency_links.txt
-puzzle15.egg-info/top_level.txt

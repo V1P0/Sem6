@@ -1,9 +1,13 @@
-#include "fifteen.hpp"
+//
+// Created by BEAST on 18.04.2023.
+//
+
 #include <Python.h>
+#include "FifteenSolver.h"
 
 using namespace std;
 
-static PyObject *isSolvable_wrapper(PyObject *self, PyObject *args) {
+static PyObject *solveWalkingDistance(PyObject *self, PyObject *args){
     int numLines;       /* how many lines we passed for parsing */
 
     PyObject * listObj; /* the list of longs */
@@ -12,277 +16,46 @@ static PyObject *isSolvable_wrapper(PyObject *self, PyObject *args) {
 /* the O! parses for a Python object (listObj) checked
    to be of type PyList_Type */
     if (! PyArg_ParseTuple( args, "O!", &PyList_Type, &listObj
-                            )) return NULL;
+    )) return NULL;
     numLines = PyList_Size(listObj);
     if (numLines != 16) {
         PyErr_SetString(PyExc_ValueError, "array must be of length 16");
         return NULL;
     }
-    vector<int> instance;
-
-    PyObject* new_list = PyList_New(16);
-    for (int i=0; i<numLines; i++) {
-        longObj = PyList_GetItem(listObj, i);
-        long l = PyLong_AsLong(longObj);
-        instance.push_back((int)l);
-
-    }
-    if(isSolvable(instance)){
-        Py_RETURN_TRUE;
-    }
-    Py_RETURN_FALSE;
-}
-
-static PyObject *solveManhattan_wrapper(PyObject *self, PyObject *args) {
-    int numLines;       /* how many lines we passed for parsing */
-
-    PyObject * listObj; /* the list of longs */
-    PyObject * longObj;  /* one long in the list */
-
-/* the O! parses for a Python object (listObj) checked
-   to be of type PyList_Type */
-    if (! PyArg_ParseTuple( args, "O!", &PyList_Type, &listObj
-                            )) return NULL;
-    numLines = PyList_Size(listObj);
-    if (numLines != 16) {
-        PyErr_SetString(PyExc_ValueError, "array must be of length 16");
-        return NULL;
-    }
-    vector<int> instance;
-
-    for (int i=0; i<numLines; i++) {
-        longObj = PyList_GetItem(listObj, i);
-        long l = PyLong_AsLong(longObj);
-        instance.push_back((int)l);
-
-    }
-    if(!isSolvable(instance)){
-        PyErr_SetString(PyExc_ValueError, "given instance is not solvable");
-        return NULL;
-    }
-
-
-    Heuristic* h = new ManhattanDistance();
-    long s = 0;
-    Node* solution = solve(instance, h, &s);
-    PyObject* solution_list = PyList_New(0);
-    while(solution!=nullptr){
-        PyObject* step = PyList_New(16);
-        for(int i = 0; i<16; i++){
-            PyList_SetItem(step, i, PyLong_FromLong(solution->state[i]));
+    char board[4][4];
+    int k = 0;
+    for (int i=0; i<4; i++) {
+        for (int j=0; j<4; j++) {
+            longObj = PyList_GetItem(listObj, k);
+            board[i][j] = (char)PyLong_AsLong(longObj);
+            k++;
         }
-        PyList_Append(solution_list, step);
-        solution = solution->previous;
-    }
-    PyList_Reverse(solution_list);
-    PyObject* ret = PyTuple_Pack(2, PyLong_FromLong(s), solution_list);
-
-
-    return ret;
-}
-
-static PyObject *solveMisplaced_wrapper(PyObject *self, PyObject *args) {
-    int numLines;       /* how many lines we passed for parsing */
-
-    PyObject * listObj; /* the list of longs */
-    PyObject * longObj;  /* one long in the list */
-
-/* the O! parses for a Python object (listObj) checked
-   to be of type PyList_Type */
-    if (! PyArg_ParseTuple( args, "O!", &PyList_Type, &listObj
-                            )) return NULL;
-    numLines = PyList_Size(listObj);
-    if (numLines != 16) {
-        PyErr_SetString(PyExc_ValueError, "array must be of length 16");
-        return NULL;
-    }
-    vector<int> instance;
-
-    for (int i=0; i<numLines; i++) {
-        longObj = PyList_GetItem(listObj, i);
-        long l = PyLong_AsLong(longObj);
-        instance.push_back((int)l);
-
-    }
-    if(!isSolvable(instance)){
-        PyErr_SetString(PyExc_ValueError, "given instance is not solvable");
-        return NULL;
     }
 
-
-    Heuristic* h = new MisplacedTiles();
-    long s = 0;
-    Node* solution = solve(instance, h, &s);
+    FifteenInstance* start = new FifteenInstance(board);
+    Heuristic* heuristic = new WalkingDistance();
+    long long int counter = 0;
+    vector<array<array<char, 4>, 4>> path = AStar(start, heuristic, counter);
     PyObject* solution_list = PyList_New(0);
-    while(solution!=nullptr){
-        PyObject* step = PyList_New(16);
-        for(int i = 0; i<16; i++){
-            PyList_SetItem(step, i, PyLong_FromLong(solution->state[i]));
+    for (int i = 0; i < path.size(); i++) {
+        PyObject* solution = PyList_New(0);
+        for (int j = 0; j < 4; j++) {
+            PyObject* row = PyList_New(0);
+            for (int k = 0; k < 4; k++) {
+                PyList_Append(row, PyLong_FromLong((long)path[i][j][k]));
+            }
+            PyList_Append(solution, row);
         }
-        PyList_Append(solution_list, step);
-        solution = solution->previous;
+        PyList_Append(solution_list, solution);
     }
-    PyList_Reverse(solution_list);
-
-    PyObject* ret = PyTuple_Pack(2, PyLong_FromLong(s), solution_list);
-
-
-    return ret;
-}
-
-static PyObject *solveMDLC_wrapper(PyObject *self, PyObject *args) {
-    int numLines;       /* how many lines we passed for parsing */
-
-    PyObject * listObj; /* the list of longs */
-    PyObject * longObj;  /* one long in the list */
-
-/* the O! parses for a Python object (listObj) checked
-   to be of type PyList_Type */
-    if (! PyArg_ParseTuple( args, "O!", &PyList_Type, &listObj
-                            )) return NULL;
-    numLines = PyList_Size(listObj);
-    if (numLines != 16) {
-        PyErr_SetString(PyExc_ValueError, "array must be of length 16");
-        return NULL;
-    }
-    vector<int> instance;
-
-    for (int i=0; i<numLines; i++) {
-        longObj = PyList_GetItem(listObj, i);
-        long l = PyLong_AsLong(longObj);
-        instance.push_back((int)l);
-
-    }
-    if(!isSolvable(instance)){
-        PyErr_SetString(PyExc_ValueError, "given instance is not solvable");
-        return NULL;
-    }
-
-
-    Heuristic* h = new MDLinearConflict();
-    long s = 0;
-    Node* solution = solve(instance, h, &s);
-    PyObject* solution_list = PyList_New(0);
-    while(solution!=nullptr){
-        PyObject* step = PyList_New(16);
-        for(int i = 0; i<16; i++){
-            PyList_SetItem(step, i, PyLong_FromLong(solution->state[i]));
-        }
-        PyList_Append(solution_list, step);
-        solution = solution->previous;
-    }
-    PyList_Reverse(solution_list);
-    PyObject* ret = PyTuple_Pack(2, PyLong_FromLong(s), solution_list);
-
-
-    return ret;
-}
-
-static PyObject *solveID_wrapper(PyObject *self, PyObject *args) {
-    int numLines;       /* how many lines we passed for parsing */
-
-    PyObject * listObj; /* the list of longs */
-    PyObject * longObj;  /* one long in the list */
-
-    if (! PyArg_ParseTuple( args, "O!", &PyList_Type, &listObj
-                            )) return NULL;
-    numLines = PyList_Size(listObj);
-    if (numLines != 16) {
-        PyErr_SetString(PyExc_ValueError, "array must be of length 16");
-        return NULL;
-    }
-    vector<int> instance;
-
-    for (int i=0; i<numLines; i++) {
-        longObj = PyList_GetItem(listObj, i);
-        long l = PyLong_AsLong(longObj);
-        instance.push_back((int)l);
-
-    }
-    if(!isSolvable(instance)){
-        PyErr_SetString(PyExc_ValueError, "given instance is not solvable");
-        return NULL;
-    }
-
-
-    Heuristic* h = new InvertDistance();
-    long s = 0;
-    Node* solution = solve(instance, h, &s);
-    PyObject* solution_list = PyList_New(0);
-    while(solution!=nullptr){
-        PyObject* step = PyList_New(16);
-        for(int i = 0; i<16; i++){
-            PyList_SetItem(step, i, PyLong_FromLong(solution->state[i]));
-        }
-        PyList_Append(solution_list, step);
-        solution = solution->previous;
-    }
-    PyList_Reverse(solution_list);
-
-    PyObject* ret = PyTuple_Pack(2, PyLong_FromLong(s), solution_list);
-
-
-    return ret;
-}
-
-static PyObject *solveWD_wrapper(PyObject *self, PyObject *args) {
-    int numLines;       /* how many lines we passed for parsing */
-
-    PyObject * listObj; /* the list of longs */
-    PyObject * longObj;  /* one long in the list */
-
-    if (! PyArg_ParseTuple( args, "O!", &PyList_Type, &listObj
-                            )) return NULL;
-    numLines = PyList_Size(listObj);
-    if (numLines != 16) {
-        PyErr_SetString(PyExc_ValueError, "array must be of length 16");
-        return NULL;
-    }
-    vector<int> instance;
-
-    for (int i=0; i<numLines; i++) {
-        longObj = PyList_GetItem(listObj, i);
-        long l = PyLong_AsLong(longObj);
-        instance.push_back((int)l);
-
-    }
-    if(!isSolvable(instance)){
-        PyErr_SetString(PyExc_ValueError, "given instance is not solvable");
-        return NULL;
-    }
-
-
-    Heuristic* h = new WalkingDistance();
-    long s = 0;
-    Node* solution = solve(instance, h, &s);
-    PyObject* solution_list = PyList_New(0);
-    while(solution!=nullptr){
-        PyObject* step = PyList_New(16);
-        for(int i = 0; i<16; i++){
-            PyList_SetItem(step, i, PyLong_FromLong(solution->state[i]));
-        }
-        PyList_Append(solution_list, step);
-        solution = solution->previous;
-    }
-    PyList_Reverse(solution_list);
-
-
-    PyObject* ret = PyTuple_Pack(2, PyLong_FromLong(s), solution_list);
-
-
+    PyObject* ret = PyTuple_Pack(2, PyLong_FromLong(counter), solution_list);
     return ret;
 }
 
 static PyMethodDef Puzzle15Methods[] = {
-        {"isSolvable", isSolvable_wrapper, METH_VARARGS, "Python function that determines if a given 15 puzzle instance is solvable"},
-        {"solveManhattan", solveManhattan_wrapper, METH_VARARGS, "Python function that solves a given 15 puzzle instance"},
-        {"solveMisplaced", solveMisplaced_wrapper, METH_VARARGS, "Python function that solves a given 15 puzzle instance"},
-        {"solveMDLinearConflict", solveMDLC_wrapper, METH_VARARGS, "Python function that solves a given 15 puzzle instance"},
-        {"solveInvertDistance", solveID_wrapper, METH_VARARGS, "Python function that solves a given 15 puzzle instance"},
         {"solveWalkingDistance", solveWD_wrapper, METH_VARARGS, "Python function that solves a given 15 puzzle instance"},
         {NULL, NULL, 0, NULL}
 };
-
 
 static struct PyModuleDef puzzle15module = {
         PyModuleDef_HEAD_INIT,
@@ -295,4 +68,5 @@ static struct PyModuleDef puzzle15module = {
 PyMODINIT_FUNC PyInit_puzzle15(void) {
     return PyModule_Create(&puzzle15module);
 }
+
 

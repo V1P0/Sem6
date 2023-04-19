@@ -5,7 +5,10 @@ def main():
           version="1.0.0",
           description="Python module for solving 15 puzzle",
           author="Mateusz Jończak 261691",
-          ext_modules=[Extension("puzzle15", ["my_module.cpp", "fifteen.cpp"])])
+          ext_modules=[Extension("puzzle15", ["my_module.cpp",
+                                              "fifteenInstance.cpp",
+                                              "FifteenSolver.cpp",
+                                              "heuristics.cpp"])])
 
 if __name__ == "__main__":
     main()
