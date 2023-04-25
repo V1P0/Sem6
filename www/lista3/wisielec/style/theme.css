@@ -1,0 +1,191 @@
+@charset "UTF-8";
+/* Reset stylów */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Stylowanie głównego kontenera gry */
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* Stylowanie kontenera słowa do odgadnięcia */
+.word-container {
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  display: flex;
+}
+
+.letter-hidden {
+  color: transparent;
+  border: 2px solid #000;
+  width: 2rem;
+}
+
+/* Stylowanie kontenera alfabetu */
+.alphabet-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+/* Stylowanie kafelków z literami alfabetu */
+.alphabet-container input[type=button] {
+  display: inline-block;
+  width: 3rem;
+  height: 3rem;
+  margin: 0.5rem;
+  padding: 0;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Stylowanie kafelków z literami alfabetu po najechaniu kursorem myszy */
+.alphabet-container input[type=button]:hover {
+  background-color: #ccc;
+}
+
+/* Stylowanie kafelków z literami alfabetu w stanie aktywnym */
+.alphabet-container input[type=button]:active {
+  background-color: #999;
+}
+
+/* Stylowanie kontenera szubienicy */
+.hangman-container {
+  width: 20rem;
+  height: 20rem;
+  margin-bottom: 2rem;
+  background-color: #fff;
+  border: 2px solid #000;
+  position: relative;
+}
+
+/* Stylowanie kolejnych elementów szubienicy */
+.hangman-container .step {
+  position: absolute;
+}
+
+.hangman-container .step.one {
+  top: 0;
+  left: 2rem;
+  width: 16rem;
+  height: 2px;
+  background-color: #000;
+}
+
+.hangman-container .step.two {
+  top: 0;
+  left: 2rem;
+  width: 2px;
+  height: 20rem;
+  background-color: #000;
+}
+
+.hangman-container .step.three {
+  top: 0;
+  right: 2rem;
+  width: 2px;
+  height: 6rem;
+  background-color: #000;
+}
+
+.hangman-container .step.four {
+  top: 6rem;
+  right: 2rem;
+  width: 10rem;
+  height: 2px;
+  background-color: #000;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.buttons-container #reset-button {
+  display: block;
+  margin: 0 auto;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+.buttons-container #save-button {
+  display: block;
+  margin: 0 auto;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+.buttons-container #change-button {
+  display: block;
+  margin: 0 auto;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+.buttons-container #reset-button:hover,
+.buttons-container #change-button:hover,
+.buttons-container #save-button:hover {
+  background-color: #ccc;
+}
+
+.display-none {
+  display: none !important;
+}
+
+.categories {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+.categories .category-button {
+  display: block;
+  margin: 0 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+.categories .category-button:hover {
+  background-color: #ccc;
+}
+
+.water {
+  width: "100%";
+  background-color: "blue";
+  height: "0%";
+}
+
+/*# sourceMappingURL=theme.css.map */

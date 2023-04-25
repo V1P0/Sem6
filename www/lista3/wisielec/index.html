@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style/theme.css" />
+    <title>Home Page</title>
+  </head>
+  <body>
+    <main>
+      <div class="game-container display-none">
+        <div class="word-container">
+          <!-- Podkreślenia słowa do odgadnięcia -->
+        </div>
+        <div class="hangman-container">
+          <div class="water"></div>
+        </div>
+
+        <div class="alphabet-container">
+          <input type="button" value="A" />
+          <input type="button" value="B" />
+          <input type="button" value="C" />
+          <input type="button" value="D" />
+          <input type="button" value="E" />
+          <input type="button" value="F" />
+          <input type="button" value="G" />
+          <input type="button" value="H" />
+          <input type="button" value="I" />
+          <input type="button" value="J" />
+          <input type="button" value="K" />
+          <input type="button" value="L" />
+          <input type="button" value="M" />
+          <input type="button" value="N" />
+          <input type="button" value="O" />
+          <input type="button" value="P" />
+          <input type="button" value="Q" />
+          <input type="button" value="R" />
+          <input type="button" value="S" />
+          <input type="button" value="T" />
+          <input type="button" value="U" />
+          <input type="button" value="V" />
+          <input type="button" value="W" />
+          <input type="button" value="X" />
+          <input type="button" value="Y" />
+          <input type="button" value="Z" />
+
+          <!-- itd. dla pozostałych liter alfabetu -->
+        </div>
+
+        <div class="buttons-container">
+          <button id="reset-button">Reset</button>
+          <button id="save-button">Save</button>
+          <button id="change-button">Change Category</button>
+        </div>
+      </div>
+      <div class="categories">
+        <button class="category-button" data-category="animals">Animals</button>
+        <button class="category-button" data-category="fruits">Fruits</button>
+        <button class="category-button" data-category="countries">
+          Countries
+        </button>
+      </div>
+    </main>
+  </body>
+  <script src="scripts/index.js"></script>
+</html>
