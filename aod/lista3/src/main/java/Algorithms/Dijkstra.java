@@ -1,0 +1,4 @@
+package Algorithms;
+
+interface Dijkstra {
+}
