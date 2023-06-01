@@ -1,0 +1,5 @@
+/mnt/d/repos/Sem6/aod/lista3/CMakeFiles/rebuild_cache.dir
+/mnt/d/repos/Sem6/aod/lista3/CMakeFiles/edit_cache.dir
+/mnt/d/repos/Sem6/aod/lista3/CMakeFiles/binary_heap.dir
+/mnt/d/repos/Sem6/aod/lista3/CMakeFiles/dial.dir
+/mnt/d/repos/Sem6/aod/lista3/CMakeFiles/radix.dir

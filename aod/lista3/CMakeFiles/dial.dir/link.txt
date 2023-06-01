@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/dial.dir/dial.cpp.o CMakeFiles/dial.dir/src/fileread.cpp.o CMakeFiles/dial.dir/src/graph_utill.cc.o CMakeFiles/dial.dir/src/algorithms.cpp.o  -o dial 

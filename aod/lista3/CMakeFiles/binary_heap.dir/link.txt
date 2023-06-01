@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/binary_heap.dir/binary_heap.cpp.o CMakeFiles/binary_heap.dir/src/fileread.cpp.o CMakeFiles/binary_heap.dir/src/graph_utill.cc.o CMakeFiles/binary_heap.dir/src/algorithms.cpp.o  -o binary_heap 
